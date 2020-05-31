@@ -4,6 +4,9 @@ AppClass::AppClass(std::string a_windowName) : m_sWindowName(a_windowName) {}
 AppClass::AppClass(AppClass const& input) {}
 AppClass& AppClass::operator=(AppClass const& input) { return *this; }
 AppClass::~AppClass(void){ Release(); }
+
+std::vector<glm::vec3> lVertex;
+bool compColor =  false;
 void AppClass::Run(void)
 {
 	//Initialize the system with the fields recollected by the constructor
@@ -72,7 +75,7 @@ void AppClass::InitShaders(void)
 }
 void AppClass::InitVariables(void)
 {
-	std::vector<glm::vec3> lVertex;
+	//std::vector<glm::vec3> lVertex;
 	//vertex 1
 	lVertex.push_back(glm::vec3(-1.0f, -1.0f, 0.0f)); //position
 	lVertex.push_back(glm::vec3(1.0f, 0.0f, 0.0f)); //color
@@ -115,6 +118,43 @@ void AppClass::ProcessKeyboard(sf::Event a_event)
 		m_v3Color = glm::vec3(0.0f, 0.0f, 1.0f);
 	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num0))
 		m_v3Color = glm::vec3(-1.0f, -1.0f, -1.0f);
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num4))
+	{
+		compColor = !compColor;
+		if (compColor == true)
+		{
+		lVertex[1] = glm::vec3(0.0f, 1.0f, 1.0f);
+		lVertex[3] = glm::vec3(1.0f, 0.0f, 1.0f);
+		lVertex[5] = glm::vec3(1.0f, 1.0f, 0.0f);
+		}
+		else
+		{
+			lVertex[1] = glm::vec3(1.0f, 0.0f, 0.0f);
+			lVertex[3] = glm::vec3(0.0f, 1.0f, 0.0f);
+			lVertex[5] = glm::vec3(0.0f, 0.0f, 1.0f);
+		}
+
+
+		glGenVertexArrays(1, &m_uVAO);//Generate vertex array object
+		glGenBuffers(1, &m_uVBO);//Generate Vertex Buffered Object
+
+		glBindVertexArray(m_uVAO);//Bind the VAO
+		glBindBuffer(GL_ARRAY_BUFFER, m_uVBO);//Bind the VBO
+
+		//Generate space for the VBO (vertex count times size of vec3)
+		glBufferData(GL_ARRAY_BUFFER, lVertex.size() * sizeof(glm::vec3), &lVertex[0], GL_STATIC_DRAW);
+
+		//count the attributes
+		int attributeCount = 2;
+
+		// Position attribute
+		glEnableVertexAttribArray(0);
+		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, attributeCount * sizeof(glm::vec3), (GLvoid*)0);
+
+		glEnableVertexAttribArray(1);
+		glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, attributeCount * sizeof(glm::vec3), (GLvoid*)(1 * sizeof(glm::vec3)));
+	}
+
 }
 void AppClass::Display(void)
 {
