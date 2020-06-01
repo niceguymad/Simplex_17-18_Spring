@@ -1,3 +1,6 @@
+/*
+	made the complimentary colors turn on and off aftger pressing the 'C' key
+*/
 #include "AppClass.h"
 //Application Class
 AppClass::AppClass(std::string a_windowName) : m_sWindowName(a_windowName) {}
@@ -6,7 +9,7 @@ AppClass& AppClass::operator=(AppClass const& input) { return *this; }
 AppClass::~AppClass(void){ Release(); }
 
 std::vector<glm::vec3> lVertex;
-bool compColor =  false;
+  
 void AppClass::Run(void)
 {
 	//Initialize the system with the fields recollected by the constructor
@@ -70,7 +73,7 @@ void AppClass::InitOpenGL(void)
 }
 void AppClass::InitShaders(void)
 {
-	m_uShaderProgramID = LoadShaders("Shaders//BasicColor.vs", "Shaders//BasicColor.fs");
+	m_uShaderProgramID = LoadShaders("Shaders//BasicColor.vs", "Shaders//CompShader.fs");
 	glUseProgram(m_uShaderProgramID);
 }
 void AppClass::InitVariables(void)
@@ -118,27 +121,30 @@ void AppClass::ProcessKeyboard(sf::Event a_event)
 		m_v3Color = glm::vec3(0.0f, 0.0f, 1.0f);
 	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num0))
 		m_v3Color = glm::vec3(-1.0f, -1.0f, -1.0f);
-	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num4))// Sets the colors to their complimentary colors and back to normal when '4' is pressed
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::C))// Sets the colors to their complimentary colors and back to normal when 'C' is pressed
 	{
 		compColor = !compColor;
-		if (compColor == true)
-		{
-			lVertex[1] = glm::vec3(0.0f, 1.0f, 1.0f);
-			lVertex[3] = glm::vec3(1.0f, 0.0f, 1.0f);
-			lVertex[5] = glm::vec3(1.0f, 1.0f, 0.0f);
-		}
-		else
-		{
-			lVertex[1] = glm::vec3(1.0f, 0.0f, 0.0f);
-			lVertex[3] = glm::vec3(0.0f, 1.0f, 0.0f);
-			lVertex[5] = glm::vec3(0.0f, 0.0f, 1.0f);
-		}
 
-		//Generate space for the VBO (vertex count times size of vec3)
-		glBufferData(GL_ARRAY_BUFFER, lVertex.size() * sizeof(glm::vec3), &lVertex[0], GL_STATIC_DRAW);
+		//Original way i completed the project
+		//if (compColor == true)
+		//{
+		//	lVertex[1] = glm::vec3(0.0f, 1.0f, 1.0f);
+		//	lVertex[3] = glm::vec3(1.0f, 0.0f, 1.0f);
+		//	lVertex[5] = glm::vec3(1.0f, 1.0f, 0.0f);
+		//}
+		//else
+		//{
+		//	lVertex[1] = glm::vec3(1.0f, 0.0f, 0.0f);
+		//	lVertex[3] = glm::vec3(0.0f, 1.0f, 0.0f);
+		//	lVertex[5] = glm::vec3(0.0f, 0.0f, 1.0f);
+		//}
+
+		////Generate space for the VBO (vertex count times size of vec3)
+		//glBufferData(GL_ARRAY_BUFFER, lVertex.size() * sizeof(glm::vec3), &lVertex[0], GL_STATIC_DRAW);
 
 
 	}
+
 }
 void AppClass::Display(void)
 {
@@ -148,6 +154,9 @@ void AppClass::Display(void)
 	//read uniforms and send values
 	GLuint SolidColor = glGetUniformLocation(m_uShaderProgramID, "SolidColor");
 	glUniform3f(SolidColor, m_v3Color.r, m_v3Color.g, m_v3Color.b);
+
+	GLuint Complimentary = glGetUniformLocation(m_uShaderProgramID, "Complimentary");
+	glUniform1i(Complimentary, compColor);
 
 	//draw content
 	glDrawArrays(GL_TRIANGLES, 0, 3);

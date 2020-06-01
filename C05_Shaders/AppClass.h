@@ -31,6 +31,9 @@ class AppClass
 	
 	glm::vec3 m_v3Color = glm::vec3(-1.0f); //Color of shape
 
+	//true if complimentary colors are active
+	bool compColor = false;
+
 	bool m_bRunning = true; //Running Flag
 		
 public:
