@@ -73,20 +73,20 @@ void AppClass::InitOpenGL(void)
 }
 void AppClass::InitShaders(void)
 {
-	m_uShaderProgramID = LoadShaders("Shaders//BasicColor.vs", "Shaders//CompShader.fs");
+	m_uShaderProgramID = LoadShaders("Shaders//Basic1.vs", "Shaders//CompShader.fs");
 	glUseProgram(m_uShaderProgramID);
 }
 void AppClass::InitVariables(void)
 {
 	//std::vector<glm::vec3> lVertex;
 	//vertex 1
-	lVertex.push_back(glm::vec3(-1.0f, -1.0f, 0.0f)); //position
+	lVertex.push_back(glm::vec3(-0.25f, -0.25f, 0.0f)); //position
 	lVertex.push_back(glm::vec3(1.0f, 0.0f, 0.0f)); //color
 	//vertex 2
-	lVertex.push_back(glm::vec3(1.0f, -1.0f, 0.0f)); //position
+	lVertex.push_back(glm::vec3(0.25f, -0.25f, 0.0f)); //position
 	lVertex.push_back(glm::vec3(0.0f, 1.0f, 0.0f)); //color
 	//vertex 3
-	lVertex.push_back(glm::vec3(0.0f, 1.0f, 0.0f)); //position
+	lVertex.push_back(glm::vec3(0.0f, 0.25f, 0.0f)); //position
 	lVertex.push_back(glm::vec3(0.0f, 0.0f, 1.0f)); //color
 	
 	glGenVertexArrays(1, &m_uVAO);//Generate vertex array object
@@ -108,6 +108,19 @@ void AppClass::InitVariables(void)
 	// Color attribute
 	glEnableVertexAttribArray(1);
 	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, attributeCount * sizeof(glm::vec3), (GLvoid*)(1 * sizeof(glm::vec3)));
+
+	position = new float[16];
+	for (int i = 0; i < 16; i++)
+	{
+		position[i] = 0;
+	}
+	position[0] = 1.0f;
+	position[5] = 1.0f;
+	position[10] = 1.0f;
+	position[15] = 1.0f;
+
+	position[12] = 0.3f;
+	position[13] = 0.3f;
 }
 void AppClass::ProcessKeyboard(sf::Event a_event)
 {
@@ -155,8 +168,14 @@ void AppClass::Display(void)
 	GLuint SolidColor = glGetUniformLocation(m_uShaderProgramID, "SolidColor");
 	glUniform3f(SolidColor, m_v3Color.r, m_v3Color.g, m_v3Color.b);
 
+	m_m4Transform = glm::scale(m_m4Transform, glm::vec3(.99f));
+
 	GLuint Complimentary = glGetUniformLocation(m_uShaderProgramID, "Complimentary");
 	glUniform1i(Complimentary, compColor);
+
+	GLuint MVP = glGetUniformLocation(m_uShaderProgramID, "MVP");
+	//glUniformMatrix4fv(MVP, 1, GL_FALSE, position);
+	glUniformMatrix4fv(MVP, 1, GL_FALSE, glm::value_ptr(m_m4Transform));
 
 	//draw content
 	glDrawArrays(GL_TRIANGLES, 0, 3);

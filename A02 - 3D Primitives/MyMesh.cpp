@@ -276,7 +276,26 @@ void MyMesh::GenerateCone(float a_fRadius, float a_fHeight, int a_nSubdivisions,
 	Init();
 
 	// Replace this with your code
-	GenerateCube(a_fRadius * 2.0f, a_v3Color);
+	//GenerateCube(a_fRadius * 2.0f, a_v3Color);
+	float radians = (360 / (float)a_nSubdivisions) * (PI / 180);
+
+	//Starting values for the vectors used for the triangles 
+	vector3 start = vector3(0, 0, a_fHeight / 2);
+	vector3 middle = vector3(a_fRadius, 0, a_fHeight / 2);
+	vector3 end = vector3(cosf(radians) * a_fRadius, sinf(radians) * a_fRadius, a_fHeight / 2);
+	vector3 top = vector3(0, 0, -a_fHeight/2);
+
+	//creates the amount of triangles needed for the number of sides wanted
+	for (int i = 1; i <= a_nSubdivisions; i++)
+	{
+		AddTri(start, middle, end);
+		AddTri(top, end, middle);
+
+		middle = end;
+		end = vector3(cosf(radians * (i + 1)) * a_fRadius, sinf(radians * (i + 1)) * a_fRadius, a_fHeight / 2);
+
+	}
+
 	// -------------------------------
 
 	// Adding information about color
@@ -300,7 +319,31 @@ void MyMesh::GenerateCylinder(float a_fRadius, float a_fHeight, int a_nSubdivisi
 	Init();
 
 	// Replace this with your code
-	GenerateCube(a_fRadius * 2.0f, a_v3Color);
+	//GenerateCube(a_fRadius * 2.0f, a_v3Color);
+	float radians = (360 / (float)a_nSubdivisions) * (PI / 180);
+
+	//Starting values for the vectors used for the triangles 
+	vector3 start = vector3(0, 0, a_fHeight / 2);
+	vector3 middle = vector3(a_fRadius, 0, a_fHeight / 2);
+	vector3 end = vector3(cosf(radians) * a_fRadius, sinf(radians) * a_fRadius, a_fHeight / 2);
+	
+	vector3 startB = vector3(0, 0, -a_fHeight / 2);
+	vector3 middleB = vector3(a_fRadius, 0, -a_fHeight / 2);
+	vector3 endB = vector3(cosf(radians) * a_fRadius, sinf(radians) * a_fRadius, -a_fHeight / 2);
+
+	//creates the amount of triangles needed for the number of sides wanted
+	for (int i = 1; i <= a_nSubdivisions; i++)
+	{
+		AddTri(start, middle, end);
+		AddTri(startB, endB, middleB);
+		AddQuad( end, middle, endB, middleB);
+
+		middle = end;
+		end = vector3(cosf(radians * (i + 1)) * a_fRadius, sinf(radians * (i + 1)) * a_fRadius, a_fHeight / 2);
+		middleB = endB;
+		endB = vector3(cosf(radians * (i + 1)) * a_fRadius, sinf(radians * (i + 1)) * a_fRadius, -a_fHeight / 2);
+
+	}
 	// -------------------------------
 
 	// Adding information about color
@@ -330,7 +373,41 @@ void MyMesh::GenerateTube(float a_fOuterRadius, float a_fInnerRadius, float a_fH
 	Init();
 
 	// Replace this with your code
-	GenerateCube(a_fOuterRadius * 2.0f, a_v3Color);
+	//GenerateCube(a_fRadius * 2.0f, a_v3Color);
+	float radians = (360 / (float)a_nSubdivisions) * (PI / 180);
+
+	//Starting values for the vectors used for the triangles 
+	vector3 middleO = vector3(a_fOuterRadius, 0, a_fHeight / 2);
+	vector3 endO = vector3(cosf(radians) * a_fOuterRadius, sinf(radians) * a_fOuterRadius, a_fHeight / 2);
+
+	vector3 middleOB = vector3(a_fOuterRadius, 0, -a_fHeight / 2);
+	vector3 endOB = vector3(cosf(radians) * a_fOuterRadius, sinf(radians) * a_fOuterRadius, -a_fHeight / 2);
+
+	vector3 middleI = vector3(a_fInnerRadius, 0, a_fHeight / 2);
+	vector3 endI = vector3(cosf(radians) * a_fInnerRadius, sinf(radians) * a_fInnerRadius, a_fHeight / 2);
+
+	vector3 middleIB = vector3(a_fInnerRadius, 0, -a_fHeight / 2);
+	vector3 endIB = vector3(cosf(radians) * a_fInnerRadius, sinf(radians) * a_fInnerRadius, -a_fHeight / 2);
+
+	//creates the amount of triangles needed for the number of sides wanted
+
+	for (int i = 1; i <= a_nSubdivisions; i++)
+	{
+		AddQuad(endO, middleO, endOB, middleOB);
+		AddQuad(middleO, endO, middleI, endI);
+		AddQuad(middleI, endI, middleIB, endIB);
+		AddQuad(endOB, middleOB, endIB, middleIB);
+
+		middleO = endO;
+		endO = vector3(cosf(radians * (i + 1)) * a_fOuterRadius, sinf(radians * (i + 1)) * a_fOuterRadius, a_fHeight / 2);
+		middleOB = endOB;
+		endOB = vector3(cosf(radians * (i + 1)) * a_fOuterRadius, sinf(radians * (i + 1)) * a_fOuterRadius, -a_fHeight / 2);
+
+		middleI = endI;
+		endI = vector3(cosf(radians * (i + 1)) * a_fInnerRadius, sinf(radians * (i + 1)) * a_fInnerRadius, a_fHeight / 2);
+		middleIB = endIB;
+		endIB = vector3(cosf(radians * (i + 1)) * a_fInnerRadius, sinf(radians * (i + 1)) * a_fInnerRadius, -a_fHeight / 2);
+	}
 	// -------------------------------
 
 	// Adding information about color
@@ -362,7 +439,49 @@ void MyMesh::GenerateTorus(float a_fOuterRadius, float a_fInnerRadius, int a_nSu
 	Init();
 
 	// Replace this with your code
-	GenerateCube(a_fOuterRadius * 2.0f, a_v3Color);
+	float radiansA = (360 / (float)a_nSubdivisionsA) * (PI / 180);
+	float radiansB = (360 / (float)a_nSubdivisionsB) * (PI / 180);
+	float ringRadius = (a_fOuterRadius - a_fInnerRadius) / 2;
+
+	float ringAngleBot = sinf(-radiansB / 2);
+	float ringAngleTop = sinf(radiansB / 2);
+
+	float xOffset = (a_fInnerRadius + ringRadius);
+
+	vector3 currentBot = vector3(a_fOuterRadius, 0, ringAngleBot);
+	vector3 currentTop = vector3(a_fOuterRadius, 0, ringAngleTop);
+
+	vector3 nextBot = vector3(a_fInnerRadius + ringRadius + cosf(radiansA) * ringRadius, sinf(radiansB) * ringRadius, ringAngleBot);
+	vector3 nextTop = vector3(a_fInnerRadius + ringRadius + cosf(radiansA) * ringRadius, sinf(radiansB) * ringRadius, ringAngleTop);
+
+
+
+
+	//creates the amount of triangles needed for the number of sides wanted
+	for(int k = 0; k < a_nSubdivisionsA; k++)
+	{
+		for (int i = 1; i <= a_nSubdivisionsB; i++)
+		{
+			AddQuad(nextBot, currentBot, nextTop, currentTop);
+			AddQuad(currentBot, nextBot, currentTop, nextTop);
+
+			currentBot = nextBot;
+			currentTop = nextTop;
+
+			nextBot = vector3((a_fInnerRadius + ringRadius) + cosf(radiansA * (i + 1)) * ringRadius, sinf(radiansB * (i + 1)) * ringRadius, ringAngleBot);
+			nextTop = vector3((a_fInnerRadius + ringRadius)+ cosf(radiansA * (i + 1)) * ringRadius, sinf(radiansB * (i + 1)) * ringRadius, ringAngleTop);
+		}
+		ringAngleTop = ringAngleBot;
+		ringAngleBot = sinf(radiansB / 2 * (k + 1)) * a_fInnerRadius;
+
+
+		vector3 currentBot = vector3(a_fOuterRadius * cosf(radiansA * (k + 1)), 0, ringAngleBot);
+		vector3 currentTop = vector3(a_fOuterRadius * cosf(radiansA * (k + 1)), 0, ringAngleTop);
+
+		vector3 nextBot = vector3((a_fInnerRadius + ringRadius) * cosf(radiansA * (k + 1)) * ringRadius, sinf(radiansB) * ringRadius, ringAngleBot);
+		vector3 nextTop = vector3((a_fInnerRadius + ringRadius) * cosf(radiansA * (k + 1)) * ringRadius, sinf(radiansB) * ringRadius, ringAngleTop);
+	}
+
 	// -------------------------------
 
 	// Adding information about color
@@ -386,11 +505,39 @@ void MyMesh::GenerateSphere(float a_fRadius, int a_nSubdivisions, vector3 a_v3Co
 	Release();
 	Init();
 
+	float sAngle = (float)(360 / 5);
+	float dAngle = (float)(360 / 5)/1.15f;
+
+	vector3 top = vector3(0, a_fRadius, 0);
+	vector3 bottom = vector3(0, -a_fRadius, 0);
+
+	vector3 left = vector3(cosf(glm::radians(sAngle)) * a_fRadius, cosf(glm::radians(dAngle)) * a_fRadius, sinf(glm::radians(sAngle)) * a_fRadius);
+	vector3 right = vector3(cosf(glm::radians(sAngle * 2)) * a_fRadius, cosf(glm::radians(dAngle)) * a_fRadius, sinf(glm::radians(sAngle * 2)) * a_fRadius);
+	vector3 botLeft = vector3(cosf(glm::radians(sAngle + sAngle / 2)) * a_fRadius, cosf(glm::radians(dAngle)) * -a_fRadius, sinf(glm::radians(sAngle + sAngle / 2)) * a_fRadius);
+	vector3 botRight = vector3(cosf(glm::radians(sAngle * 2 + sAngle / 2)) * a_fRadius, cosf(glm::radians(dAngle)) * -a_fRadius, sinf(glm::radians(sAngle * 2 + sAngle / 2)) * a_fRadius);
+
 	// Replace this with your code
-	GenerateCube(a_fRadius * 2.0f, a_v3Color);
+	for (int i = 1; i <= 5; i++)
+	{	
+		AddTri(left, top, right);
+		left = vector3(cosf(glm::radians(sAngle * (i + 1))) * a_fRadius, cosf(glm::radians(dAngle)) * a_fRadius, sinf(glm::radians(sAngle * (i + 1))) * a_fRadius);
+		right = vector3(cosf(glm::radians(sAngle * (i + 2))) * a_fRadius, cosf(glm::radians(dAngle)) * a_fRadius, sinf(glm::radians(sAngle * (i + 2))) * a_fRadius);
+		
+		AddTri(botLeft, left, botRight);
+		AddTri(left, right, botRight);
+
+		AddTri(botLeft, botRight, bottom);
+		botLeft = vector3(cosf(glm::radians(sAngle * (i + 1) + sAngle / 2)) * a_fRadius, cosf(glm::radians(dAngle)) * -a_fRadius, sinf(glm::radians(sAngle * (i + 1) + sAngle / 2)) * a_fRadius);
+		botRight = vector3(cosf(glm::radians(sAngle * (i + 2) + sAngle / 2)) * a_fRadius, cosf(glm::radians(dAngle)) * -a_fRadius, sinf(glm::radians(sAngle * (i + 2) + sAngle / 2)) * a_fRadius);
+	}
 	// -------------------------------
 
 	// Adding information about color
 	CompleteMesh(a_v3Color);
 	CompileOpenGL3X();
+}
+
+void MyMesh::subdivide(vector3 point1, vector3 point2, vector3 point3, int subdivisions)
+{
+
 }

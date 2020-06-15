@@ -31,6 +31,11 @@ public:
 	void CompileMesh(void);
 	void CompleteMesh(vector3 a_v3Color = vector3(0.25f, 0.25f, 0.25f));
 	void Render(matrix4 a_m4Model, matrix4 a_mView, matrix4 a_mProjection);
+
+	//Creates Circle with specified radius size, number of sides, and color
+	void Circle(float radius, float sides, vector3 color);
+	// creates a triangle with points set in order
+	void CreateTri(vector3 point1, vector3 point2, vector3 point3);
 };
 
 

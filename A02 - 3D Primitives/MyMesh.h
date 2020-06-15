@@ -211,6 +211,8 @@ public:
 	OUTPUT: ---
 	*/
 	void GenerateSphere(float a_fRadius, int a_nSubdivisions, vector3 a_v3Color = C_WHITE);
+
+	void subdivide(vector3 point1, vector3 point2, vector3 point3, int subdivisions);
 #pragma endregion
 };
 

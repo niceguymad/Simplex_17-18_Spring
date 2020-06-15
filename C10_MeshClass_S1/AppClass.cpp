@@ -1,32 +1,22 @@
+/*
+	Jared Baker, E04- Circle Creation
+*/
 #include "AppClass.h"
 void Application::InitVariables(void)
 {
 	////Change this to your name and email
-	//m_sProgrammer = "Alberto Bobadilla - labigm@rit.edu";
+	//m_sProgrammer = "Jared Baker - jdb3959@rit.edu";
 
 	////Alberto needed this at this position for software recording.
 	//m_pWindow->setPosition(sf::Vector2i(710, 0));
 
 	m_pMesh = new MyMesh();
-	m_pMesh->AddVertexPosition(vector3(0, 0, 0));
-	m_pMesh->AddVertexPosition(vector3(5, 0, 0));
-	m_pMesh->AddVertexPosition(vector3(0, 5, 0));
-	
-	m_pMesh->AddVertexPosition(vector3(5, 0, 0));
-	m_pMesh->AddVertexPosition(vector3(0, 5, 0));
-	m_pMesh->AddVertexPosition(vector3(5, 5, 0));
 
-	/*
-	m_pMesh->AddVertexColor(vector3(1.0, 0.0, 0.0));
-	m_pMesh->AddVertexColor(C_GREEN);
-	m_pMesh->AddVertexColor(C_BLUE);
-
-	m_pMesh->AddVertexColor(vector3(1.0, 0.0, 0.0));
-	m_pMesh->AddVertexColor(C_GREEN);
-	m_pMesh->AddVertexColor(C_BLUE);
-	*/
-	m_pMesh->CompileMesh();
-
+	// creates a circle, with a radius of 5, 12 sides, and a purple color
+	m_pMesh->Circle(5, 12, vector3(1, 0, 1));
+	// I chose 12 becuase that the finale, pic on the assignment, but it should work with all numbers,
+	// I've tested a few and after changing the sides variable to a float rather than a int there seems to be no problem with numbers that don't divide well.
+	// does not work with decimals in the number of sides
 }
 void Application::Update(void)
 {

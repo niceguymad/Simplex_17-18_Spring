@@ -35,6 +35,9 @@ class AppClass
 	bool compColor = false;
 
 	bool m_bRunning = true; //Running Flag
+
+	float* position;
+	glm::mat4 m_m4Transform;
 		
 public:
 	/*
