@@ -11,12 +11,13 @@ Date: 2017/05
 #include "imgui\ImGuiObject.h"
 
 #include "MyMesh.h"
+#include <vector>
 
 class Application
 {
 	MyMesh* m_pMesh = nullptr;
-	String m_sProgrammer = "Alberto Bobadilla - labigm@rit.edu";
-
+	String m_sProgrammer = "Jared Baker - jdb3959@rit.edu";
+	std::vector<MyMesh*> alienMesh;
 private:
 	static ImGuiObject gui; //GUI object
 
