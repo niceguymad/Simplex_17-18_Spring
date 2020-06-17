@@ -53,13 +53,27 @@ void Application::Display(void)
 
 	//calculate the current position
 	vector3 v3CurrentPos;
-	
+	vector3 start;
+	vector3 end;
+	float percentage = static_cast<float>(MapValue(fTimer, 0.0f, 5.0f, 0.0f, 1.0f));
+	static uint stop = 0;
 
-
+	start = m_stopsList[stop];
+	end = m_stopsList[(stop + 1) % m_stopsList.size()];
 
 
 	//your code goes here
-	v3CurrentPos = vector3(0.0f, 0.0f, 0.0f);
+	v3CurrentPos = glm::lerp(start, end, percentage);
+
+	if (percentage >= 1.0f)
+	{
+		stop++;
+		fTimer = 0;
+	}
+	if (stop >= m_stopsList.size())
+	{
+		stop = 0;
+	}
 	//-------------------
 	
 
