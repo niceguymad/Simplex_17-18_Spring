@@ -54,7 +54,7 @@ void Application::Display(void)
 		break;
 	case 2:
 		m_pCamera->ResetCamera();
-		m_pCamera->SetPosition(vector3(0, 0, 10.0f));
+		m_pCamera->SetPosition(vector3(0, 0, 80.0f));
 		m_pCamera->SetFOV(6.0f);
 		break;
 	case 3:
@@ -73,12 +73,12 @@ void Application::Display(void)
 		break;
 	case 6:
 		m_pCamera->ResetCamera();
-		m_pCamera->SetPosition(vector3(0, 0, -15.0f));
+		m_pCamera->SetPosition(vector3(0, 0, -15.0f)); 
 		m_pCamera->SetNearFar(vector2(1.0f, 10.0f));
 		break;
 	case 7:
 		m_pCamera->ResetCamera();
-		m_pCamera->SetUp(vector3(0, -1, 0));
+		m_pCamera->SetUp(vector3(0, -1, 0));// change what the camera considers up
 		break;
 	case 8: // Added an 8 case updated the AppClass Controls and GUI
 		m_pCamera->ResetCamera();
