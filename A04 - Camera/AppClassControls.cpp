@@ -10,7 +10,7 @@ void Application::ProcessMouseMovement(sf::Event a_event)
 	m_v3Mouse.y = static_cast<float>(mouse.y - window.y);
 	if(!m_pSystem->IsWindowFullscreen() && !m_pSystem->IsWindowBorderless())
 		m_v3Mouse += vector3(-8.0f, -32.0f, 0.0f);
-	gui.io.MousePos = ImVec2(m_v3Mouse.x, m_v3Mouse.y);
+	gui.io.MousePos = ImVec2(m_v3Mouse.x, m_v3Mouse.y);   
 }
 void Application::ProcessMousePressed(sf::Event a_event)
 {
@@ -72,6 +72,19 @@ void Application::ProcessKeyPressed(sf::Event a_event)
 	default: break;
 	case sf::Keyboard::Space:
 		break;
+	// added the heys that are needed to control the movement of the camera
+	case sf::Keyboard::W:
+		control = 1;
+		break;
+	case sf::Keyboard::A:
+		control = 2;
+		break;
+	case sf::Keyboard::S:
+		control = 3;
+		break;
+	case sf::Keyboard::D:
+		control = 4;
+		break;
 	}
 	//gui
 	gui.io.KeysDown[a_event.key.code] = true;
@@ -121,6 +134,12 @@ void Application::ProcessKeyReleased(sf::Event a_event)
 					m_uActCont = 7;
 			}
 		}
+		break;
+	case sf::Keyboard::W:
+	case sf::Keyboard::A:
+	case sf::Keyboard::S:
+	case sf::Keyboard::D:
+		control = 0;
 		break;
 	}
 
